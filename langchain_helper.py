@@ -1,3 +1,4 @@
+import openai
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
@@ -5,7 +6,8 @@ from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain.agents import initialize_agent, AgentType
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def generate_pet_name(animal_type, pet_color):
     llm = OpenAI(temperature=0.8)
