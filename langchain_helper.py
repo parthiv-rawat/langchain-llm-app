@@ -1,6 +1,8 @@
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain_community.agent_toolkits.load_tools import load_tools
+from langchain.agents import initialize_agent, AgentType
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,6 +21,30 @@ def generate_pet_name(animal_type, pet_color):
 
     return response 
 
+def langchain_agent():
+    llm = OpenAI(temperature=0.6)
+    
+    tools = load_tools(["wikipedia", "llm-math"], llm=llm)
+    
+    agent = initialize_agent(
+        tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True
+    )
+    
+    query = (
+    "Use the Wikipedia tool to find the average lifespan of a dog in years. "
+    "Extract only the numeric value. Then multiply that number by 4 using the calculator tool. "
+    "Return only the result of the multiplication."
+    )
+    
+    # result = agent.run(
+    #     "What is the average age of a dog? Multiply the age by 4"
+    # )
+    
+    result = agent.invoke(query)
+    return result 
+    # print(result)
+
 if __name__ == "__main__": 
     # print("Hello, World!")
-    print(generate_pet_name("cat", "black"))
+    # print(generate_pet_name("cat", "black"))
+    langchain_agent()

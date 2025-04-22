@@ -25,3 +25,7 @@ if user_animal_type == "Hamster":
 if user_pet_color:
     response = lch.generate_pet_name(user_animal_type, user_pet_color)
     st.text(response)
+    
+if st.button("Run Agent Math Test"):
+    agent_response = lch.langchain_agent()
+    st.text(agent_response)
